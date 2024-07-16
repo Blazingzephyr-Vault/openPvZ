@@ -61,7 +61,11 @@ target_include_directories(openPVZ PUBLIC ${HEADER_DIRS})
 # Link libraries.
 target_link_libraries(openPVZ
 PUBLIC
+	sfml-system
+	sfml-window
 	sfml-graphics
+PRIVATE
+	EnTT::EnTT
 )
 
 # Copy OpenAL DLL
@@ -70,5 +74,10 @@ if(WIN32)
         TARGET openPVZ
         COMMENT "Copy OpenAL DLL"
         PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${SFML_SOURCE_DIR}/extlibs/bin/$<IF:$<EQUAL:${CMAKE_SIZEOF_VOID_P},8>,x64,x86>/openal32.dll $<TARGET_FILE_DIR:openPVZ>
+				COMMAND ${CMAKE_COMMAND} -E copy ${SFML_BINARY_DIR}/lib/$<CONFIG>/sfml-system-2.dll $<TARGET_FILE_DIR:openPVZ>
+				COMMAND ${CMAKE_COMMAND} -E copy ${SFML_BINARY_DIR}/lib/$<CONFIG>/sfml-window-2.dll $<TARGET_FILE_DIR:openPVZ>
+				COMMAND ${CMAKE_COMMAND} -E copy ${SFML_BINARY_DIR}/lib/$<CONFIG>/sfml-graphics-2.dll $<TARGET_FILE_DIR:openPVZ>
+				COMMAND ${CMAKE_COMMAND} -E copy ${SFML_BINARY_DIR}/lib/$<CONFIG>/sfml-audio-2.dll $<TARGET_FILE_DIR:openPVZ>
+				COMMAND ${CMAKE_COMMAND} -E copy ${SFML_BINARY_DIR}/lib/$<CONFIG>/sfml-network-2.dll $<TARGET_FILE_DIR:openPVZ>
         VERBATIM)
 endif()
